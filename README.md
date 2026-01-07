@@ -1,1 +1,1 @@
-Live version: https://taicanium.github.io/HighKholo/
+Live version: https://taicaosterian.github.io/HighKholo/
