@@ -121,7 +121,7 @@
 
     async function loadData() {
         try {
-            const resp = await fetch("https://raw.githubusercontent.com/TaicaOsterian/HighKholo/refs/heads/main/hk_dict.json");
+            const resp = await fetch("hk_dict.json");
             if (!resp.ok) { throw new Error(`HTTP ${resp.status}`); }
             const data = await resp.json();
 
