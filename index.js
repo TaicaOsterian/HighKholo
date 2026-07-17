@@ -169,10 +169,10 @@
         });
 
         let debounceTimer;
-        searchInput.addEventListener("input", function() {
+        searchInput.addEventListener("input", function(e) {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout((function() {
-                if (this.value.trim()) {
+                if (e.target.value.trim()) {
                     performSearch();
                 } else {
                     lexText.innerHTML = "";
