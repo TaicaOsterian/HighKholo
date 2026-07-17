@@ -76,7 +76,7 @@
             return (
                 hkhA < hkhB ? -1 : (
                 hkhA > hkhB ? 1 : 0));
-        }());
+        });
 
         const html = matches.map(buildWordHTML).join("");
         renderHTML(html);
@@ -113,7 +113,7 @@
         return (
 			engA < engB ? -1 : (
 			engA > engB ? 1 : 0));
-    }());
+    });
 
     const html = results.map(buildSearchResultHTML).join("");
         renderHTML(html);
@@ -136,7 +136,7 @@
                 const engA = (a.eng || "").toLowerCase();
                 const engB = (b.eng || "").toLowerCase();
                 return (engA < engB ? -1 : (engA > engB ? 1 : 0));
-            }());
+            });
         } catch (err) {
             console.error("Failed to load dictionary:", err);
             if (lexText) {
@@ -177,7 +177,7 @@
                 } else {
                     lexText.innerHTML = "";
                 }
-            }()), 300);
+            }), 300);
         });
     }
 
