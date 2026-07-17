@@ -96,7 +96,7 @@
         (word.hkh && word.hkh.toLowerCase().includes(query)) ||
         (word.xka && word.xka.toLowerCase().includes(query)) ||
         (word.n && word.n.toLowerCase().includes(query));
-    })();
+    });
 
     if (results.length === 0) {
         lexText.innerHTML = "<p><em>No matches found.</em></p>";
