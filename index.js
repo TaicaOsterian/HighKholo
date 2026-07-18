@@ -83,39 +83,56 @@
     }
 
     function performSearch() {
-    const query = searchInput.value.trim().toLowerCase();
-    if (!query) {
-        lexText.innerHTML = "";
-        return;
-    }
+        const query = searchInput.value.trim().toLowerCase();
+        if (!query) {
+            lexText.innerHTML = "";
+            return;
+        }
 
-    if (!DB.words.length) { return; }
+        if (!DB.words.length) {
+            return;
+        }
 
-    const results = DB.words.filter(function (word) {
-        return (word.eng && word.eng.toLowerCase().includes(query)) ||
-        (word.hkh && word.hkh.toLowerCase().includes(query)) ||
-        (word.xka && word.xka.toLowerCase().includes(query)) ||
-        (word.n && word.n.toLowerCase().includes(query));
-    });
+        const primaryResults = [];
+        const secondaryResults = [];
 
-    if (results.length === 0) {
-        lexText.innerHTML = "<p><em>No matches found.</em></p>";
-        return;
-    }
+        for (let i = 0; i < DB.words.length; i++) {
+            const word = DB.words[i];
+            
+            const eng = (word.eng || "").toLowerCase();
+            const hkh = (word.hkh || "").toLowerCase();
+            const xka = (word.xka || "").toLowerCase();
+            const n = (word.n || "").toLowerCase();
 
-    results.sort(function (a, b) {
-        const hkhA = a.hkh.toLowerCase();
-        const hkhB = b.hkh.toLowerCase();
-        if (hkhA < hkhB) { return -1; }
-        if (hkhA > hkhB) { return 1; }
-        const engA = (a.eng || "").toLowerCase();
-        const engB = (b.eng || "").toLowerCase();
-        return (
-			engA < engB ? -1 : (
-			engA > engB ? 1 : 0));
-    });
+            if (eng === query || hkh === query || xka === query || n === query) {
+                primaryResults.push(word);
+            } 
+            else if (eng.includes(query) || hkh.includes(query) || xka.includes(query) || n.includes(query)) {
+                secondaryResults.push(word);
+            }
+        }
 
-    const html = results.map(buildSearchResultHTML).join("");
+        if (primaryResults.length === 0 && secondaryResults.length === 0) {
+            lexText.innerHTML = "<p><em>No matches found.</em></p>";
+            return;
+        }
+
+        const alphaSort = function (a, b) {
+            const hkhA = (a.hkh || "").toLowerCase();
+            const hkhB = (b.hkh || "").toLowerCase();
+            if (hkhA < hkhB) { return -1; }
+            if (hkhA > hkhB) { return 1; }
+            const engA = (a.eng || "").toLowerCase();
+            const engB = (b.eng || "").toLowerCase();
+            return engA < engB ? -1 : (engA > engB ? 1 : 0);
+        };
+
+        primaryResults.sort(alphaSort);
+        secondaryResults.sort(alphaSort);
+
+        const results = [...primaryResults, ...secondaryResults];
+
+        const html = results.map(buildSearchResultHTML).join("");
         renderHTML(html);
     }
 
